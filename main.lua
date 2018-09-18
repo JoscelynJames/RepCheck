@@ -65,21 +65,21 @@ function core:GetAllFactions()
   for i = 1, GetNumFactions() do
 		local
 		name,
-		description,
+		_,
 		standingId,
 		barMin, -- this value refers to the starting point of the reputaion status 
 		barMax, -- this is the value to get you to the next reputaion status
 		barValue, -- the total amount of points you hav for this faction
-		atWarWith,
-		canToggleAtWar,
+		_,
+		_,
 		isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
-		isCollapsed,
-		hasRep,
-		isWatched,
-		isChild,
+		_,
+		_,
+		_,
+		_,
 		factionId,
-		hasBonusRepGain,
-    canBeLFGBonus = GetFactionInfo(i)
+		_,
+    _ = GetFactionInfo(i)
 
     if not isHeader and factionId ~= nil then
 
@@ -96,9 +96,6 @@ function core:GetAllFactions()
         factionId = factionId,
         index = i,
         name = name,
-        watching = isWatched,
-        atWar = atWarWith,
-        hasBonus = hasBonusRepGain,
         barMax = barMax,
         barMin = barMin,
         barValue = barValue,
