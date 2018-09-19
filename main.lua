@@ -24,19 +24,18 @@ core = LibStub("AceAddon-3.0"):NewAddon("RepCheck", "AceConsole-3.0", "AceEvent-
 -- core.Print will print in this format:
 -- corePrint("Hello world from core")
 -- 'RepCheck: "Hello world from core"' 
+-- NOTE: to print values in a table 
+-- for f in pairs(faction) do print(faction[f]) end
+-- to print values in an array use ipairs
 console = LibStub("AceConsole-3.0")
 
 core:RegisterChatCommand("RepCheck", "RepCheckSlashProcessorFunc")
 core.factions = {}
--- core.defaults = {
---   profile: {
---     chat: DEFAULT_CHAT_FRAME:GetName()
---   }
--- }
 
 -- Code that you want to run when the addon is first loaded
 function core:OnInitialize()
   core:Print("Hello, world! Thanks for installing RepCheck!")
+  core:RegisterEvent("CHAT_MSG_COMBAT_FACTION_CHANGE", core.onFactionIncrease)
 
   -- core.db = LibStub("AceDB-3.0"):New("RepCheckDB", core.defaults, true)
   core:RegisterEvent("PLAYER_ENTERING_WORLD")
@@ -44,7 +43,7 @@ end
 
 function core:PLAYER_ENTERING_WORLD()
   console.Print("In PLAYER_ENTERING_WORLD")
-	-- core:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	core:UnregisterEvent("PLAYER_ENTERING_WORLD")
   core.factions = core:GetAllFactions()
 
 end
@@ -64,9 +63,9 @@ function core:GetAllFactions()
   -- Then add that faction into our factions
   for i = 1, GetNumFactions() do
 		local
-		name,
+		name, -- name of the faction
 		_,
-		standingId,
+		standingId, -- stadning get the status name (Revered, Exaulted)
 		barMin, -- this value refers to the starting point of the reputaion status 
 		barMax, -- this is the value to get you to the next reputaion status
 		barValue, -- the total amount of points you hav for this faction
@@ -77,7 +76,7 @@ function core:GetAllFactions()
 		_,
 		_,
 		_,
-		factionId,
+		factionId, -- id spcific to the faction
 		_,
     _ = GetFactionInfo(i)
 
@@ -90,7 +89,6 @@ function core:GetAllFactions()
       -- gets the current amount of points you have at this reputation status
       local currentValue = barValue - barMin
       local statusName = _G["FACTION_STANDING_LABEL" .. standingId];
-      -- local nextStatusName = _G["FACTION_STANDING_LABEL" .. standingNextId];
 
       local faction = {
         factionId = factionId,
@@ -104,7 +102,7 @@ function core:GetAllFactions()
         nextStatusName = nextStatusName
       }
 
-      factions[factionId] = faction
+      factions[name] = faction
     end
 
   end
@@ -112,3 +110,19 @@ function core:GetAllFactions()
   return factions
 
 end 
+
+function core:onFactionIncrease(a, b) 
+  core.Print("In onQuestTurnIn")
+  core.Print("a", a)
+
+  newpattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+  _, _, name, amount = string.find(a, newpattern)
+
+  core.Print(faction)
+  core.Print(amount)
+  
+  -- REMOVE - this is looping over to see all values
+  for f in pairs(core.factions[name]) do print(core.factions[name][f]) end
+
+
+end
