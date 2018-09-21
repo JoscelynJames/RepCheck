@@ -86,10 +86,26 @@ function core:GetAllFactions()
         barValue = 0;
       end
 
+      local nextStatusId = standingId + 1
+
+			if nextStatusId > MAX_REPUTATION_REACTION then
+				nextStatusId = MAX_REPUTATION_REACTION
+      end
+      
+      local statusName = _G["FACTION_STANDING_LABEL" .. standingId];
+      local nextStatusName = _G["FACTION_STANDING_LABEL" .. nextStatusId];
+
       -- gets the current amount of points you have at this reputation status
       local currentValue = barValue - barMin
-      local statusName = _G["FACTION_STANDING_LABEL" .. standingId];
-
+      -- gets the percent completed and rounds it to the nearest full number
+      local percentCompleted = math.ceil((currentValue / (barMax - barMin)) * 100)
+      -- checks if the percent is nan
+      -- if it is the reputaion is at Exalted so set it to max
+      if tostring(percentCompleted) == "nan" then
+        percentCompleted = 0
+        nextStatusName = MAX_REPUTAION_COMPLETED
+      end 
+      
       local faction = {
         factionId = factionId,
         index = i,
@@ -97,6 +113,7 @@ function core:GetAllFactions()
         barMax = barMax,
         barMin = barMin,
         barValue = barValue,
+        percentCompleted = percentCompleted,
         currentValue =  currentValue,
         statusName = statusName,
         nextStatusName = nextStatusName
@@ -116,7 +133,7 @@ function core:onFactionIncrease(a, b)
   core.Print("a", a)
 
   newpattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-  _, _, name, amount = string.find(a, newpattern)
+  _, _, name, increase = string.find(a, newpattern)
 
   core.Print(faction)
   core.Print(amount)
@@ -124,5 +141,9 @@ function core:onFactionIncrease(a, b)
   -- REMOVE - this is looping over to see all values
   for f in pairs(core.factions[name]) do print(core.factions[name][f]) end
 
+  if name ~= nil then
+    faction = core.factions[name]
 
+    
+  end
 end
