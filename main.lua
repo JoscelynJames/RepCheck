@@ -45,7 +45,6 @@ function core:PLAYER_ENTERING_WORLD()
   console.Print("In PLAYER_ENTERING_WORLD")
 	core:UnregisterEvent("PLAYER_ENTERING_WORLD")
   core.factions = core:GetAllFactions()
-
 end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
