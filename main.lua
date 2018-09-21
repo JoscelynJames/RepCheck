@@ -129,21 +129,15 @@ function core:GetAllFactions()
 end 
 
 function core:onFactionIncrease(a, b) 
-  core.Print("In onQuestTurnIn")
-  core.Print("a", a)
-
-  newpattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-  _, _, name, increase = string.find(a, newpattern)
-
-  core.Print(faction)
-  core.Print(amount)
-  
+  pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+  _, _, name, increase = string.find(a, pattern)
   -- REMOVE - this is looping over to see all values
-  for f in pairs(core.factions[name]) do print(core.factions[name][f]) end
+  -- for f in pairs(core.factions[name]) do print(core.factions[name][f]) enda
 
   if name ~= nil then
     faction = core.factions[name]
-
-    
+    repMessage = string.format(REPUTATION_GAINED_MESSAGE, faction.name, faction.percentCompleted, faction.nextStatusName)
+    core.Print(REP_CHECK, repMessage)
   end
+
 end
