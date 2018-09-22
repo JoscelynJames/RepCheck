@@ -132,11 +132,33 @@ function core:onFactionIncrease(a, b)
   _, _, name, increase = string.find(a, pattern)
   -- REMOVE - this is looping over to see all values
   -- for f in pairs(core.factions[name]) do print(core.factions[name][f]) enda
-
+  
   if name ~= nil then
     faction = core.factions[name]
+    progressBar = core:formatProgressBar(faction.percentCompleted)
+    core.Print('bar', progressBar)
     repMessage = string.format(REPUTATION_GAINED_MESSAGE, faction.name, faction.percentCompleted, faction.nextStatusName)
     core.Print(REP_CHECK, repMessage)
   end
 
+end
+
+function core:formatProgressBar(percent) 
+  core.Print(percent)
+  completed = percent / 20
+  core.Print('completed', completed)
+  completedBar = ''..LIGHT_GREEN
+  uncompletedBar = ''..SUB_WHITE
+
+  for i = 1, 20 do
+
+    if i < completed then
+      completedBar = completedBar..COMPLETED_BLOCK_CHAR
+    else 
+      uncompletedBar = uncompletedBar..UNCOMPLETED_BLOCK_CHAR
+    end
+
+  end
+
+  return completedBar..uncompletedBar
 end
