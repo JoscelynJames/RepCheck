@@ -11,7 +11,7 @@
 core = LibStub("AceAddon-3.0"):NewAddon("RepCheck", "AceConsole-3.0", "AceEvent-3.0")
 -- LibStub is what you will use to manage your addon
 ----- makes for easy versioning
------ manages libraries 
+----- manages libraries
 
 -- console will allow you to print data in the chat screen
 -- good for error logging and debugging
@@ -23,8 +23,8 @@ core = LibStub("AceAddon-3.0"):NewAddon("RepCheck", "AceConsole-3.0", "AceEvent-
 -- good for addon annoucments/general info
 -- core.Print will print in this format:
 -- corePrint("Hello world from core")
--- 'RepCheck: "Hello world from core"' 
--- NOTE: to print values in a table 
+-- 'RepCheck: "Hello world from core"'
+-- NOTE: to print values in a table
 -- for f in pairs(faction) do print(faction[f]) end
 -- to print values in an array use ipairs
 console = LibStub("AceConsole-3.0")
@@ -42,8 +42,14 @@ function core:OnInitialize()
 end
 
 function core:PLAYER_ENTERING_WORLD()
-	core:UnregisterEvent("PLAYER_ENTERING_WORLD")
+  core:UnregisterEvent("PLAYER_ENTERING_WORLD")
   core.factions = core:GetAllFactions()
+  for f in pairs(zonesFactions) do
+    -- print(zonesFactions[f])
+    for z in pairs(zonesFactions[f]) do
+      print(zonesFactions[f][z])
+    end
+  end
 end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
@@ -51,7 +57,7 @@ function core:RepCheckSlashProcessorFunc()
   console.Print("Hello world from RepCheckSlashProcessorFunc")
 end
 
-function core:GetAllFactions() 
+function core:GetAllFactions()
   local factions = {}
   -- GetNumFactions returns the number of avliable factions
   -- While i is less then the value GetNumFactrions() returns
@@ -60,33 +66,36 @@ function core:GetAllFactions()
   -- Then apply it to our new faction
   -- Then add that faction into our factions
   for i = 1, GetNumFactions() do
-		local
-		name, -- name of the faction
-		_,
-		standingId, -- stadning get the status name (Revered, Exaulted)
-		barMin, -- this value refers to the starting point of the reputaion status 
-		barMax, -- this is the value to get you to the next reputaion status
-		barValue, -- the total amount of points you hav for this faction
-		_, _,
-		isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
-		_, _, _, _,
-		factionId, -- id spcific to the faction
-		_, _ = GetFactionInfo(i)
+    local name, -- name of the faction
+      _,
+      standingId, -- stadning get the status name (Revered, Exaulted)
+      barMin, -- this value refers to the starting point of the reputaion status
+      barMax, -- this is the value to get you to the next reputaion status
+      barValue, -- the total amount of points you hav for this faction
+      _,
+      _,
+      isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
+      _,
+      _,
+      _,
+      _,
+      factionId, -- id spcific to the faction
+      _,
+      _ = GetFactionInfo(i)
 
     if not isHeader and factionId ~= nil then
-
       if barValue == nil then
-        barValue = 0;
+        barValue = 0
       end
 
       local nextStatusId = standingId + 1
 
-			if nextStatusId > MAX_REPUTATION_REACTION then
-				nextStatusId = MAX_REPUTATION_REACTION
+      if nextStatusId > MAX_REPUTATION_REACTION then
+        nextStatusId = MAX_REPUTATION_REACTION
       end
-      
-      local statusName = _G["FACTION_STANDING_LABEL" .. standingId];
-      local nextStatusName = _G["FACTION_STANDING_LABEL" .. nextStatusId];
+
+      local statusName = _G["FACTION_STANDING_LABEL" .. standingId]
+      local nextStatusName = _G["FACTION_STANDING_LABEL" .. nextStatusId]
 
       -- gets the current amount of points you have at this reputation status
       local currentValue = barValue - barMin
@@ -97,8 +106,8 @@ function core:GetAllFactions()
       if tostring(percentCompleted) == "nan" then
         percentCompleted = 0
         nextStatusName = MAX_REPUTAION_COMPLETED
-      end 
-      
+      end
+
       local faction = {
         factionId = factionId,
         index = i,
@@ -107,53 +116,49 @@ function core:GetAllFactions()
         barMin = barMin,
         barValue = barValue,
         percentCompleted = percentCompleted,
-        currentValue =  currentValue,
+        currentValue = currentValue,
         statusName = statusName,
         nextStatusName = nextStatusName
       }
 
       factions[name] = faction
     end
-
   end
 
   return factions
+end
 
-end 
-
-function core:onFactionIncrease(a, b) 
+function core:onFactionIncrease(a, b)
   pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
   _, _, name, increase = string.find(a, pattern)
-  
+
   if name ~= nil then
     faction = core.factions[name]
     progressBar = core:formatProgressBar(faction.percentCompleted)
-    repMessage = string.format(REPUTATION_GAINED_MESSAGE, faction.name, faction.percentCompleted, faction.nextStatusName)
+    repMessage =
+      string.format(REPUTATION_GAINED_MESSAGE, faction.name, faction.percentCompleted, faction.nextStatusName)
 
     core:customPrint(repMessage)
     core:customPrint(progressBar)
   end
-  
 end
 
-function core:formatProgressBar(percent) 
-  local completedBar = ''..LIGHT_GREEN
-  local uncompletedBar = ''..SUB_WHITE
+function core:formatProgressBar(percent)
+  local completedBar = "" .. LIGHT_GREEN
+  local uncompletedBar = "" .. SUB_WHITE
 
   for i = 1, 20 do
-
     if i < (percent / 5) then
-      completedBar = completedBar..COMPLETED_BLOCK_CHAR
-    else 
-      uncompletedBar = uncompletedBar..UNCOMPLETED_BLOCK_CHAR
+      completedBar = completedBar .. COMPLETED_BLOCK_CHAR
+    else
+      uncompletedBar = uncompletedBar .. UNCOMPLETED_BLOCK_CHAR
     end
-
   end
 
-  return completedBar..uncompletedBar
+  return completedBar .. uncompletedBar
 end
 
 -- Use this print function to purposefully show data in the console
-function core:customPrint(msg) 
+function core:customPrint(msg)
   core.Print(REP_CHECK, msg)
 end
