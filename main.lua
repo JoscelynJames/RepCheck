@@ -1,9 +1,9 @@
 --------------------------------------- RepCheck ---------------------------------------
 -------------------------- The one stop shop to Check yo' ReP --------------------------
---[[ This file holds the core functions of RepCheck
+-- This file holds the core functions of RepCheck
 -- Current Function of the Addon, you ask?!
 -- Upon login you will be greeted by a nice "Hello World!"
--- If you type '/RepCheck' you will be given a hearty 'Hello World' ]]
+-- If you type '/RepCheck' you will see all the factions in your current zone
 -- When you character increased their rep with any faction
 -- You will be shown your completed percent with that faction
 -- And see a progress bar. ex:
@@ -52,7 +52,20 @@ end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
 function core:RepCheckSlashProcessorFunc()
-  console.Print("Hello world from RepCheckSlashProcessorFunc")
+  -- returns to name of the instance or zone name
+  zoneName = GetRealZoneText()
+  if zoneName == nil then
+    core.customPrint(ZONE_ERROR)
+  end
+
+  factions = zonesFactions[zoneName]
+  if factions == nil then
+    core.customPrint(FACTIONS_NOT_FOUND)
+  end
+
+  for i in pairs(factions) do
+    core:customPrint(factions[i])
+  end
 end
 
 function core:GetAllFactions()
