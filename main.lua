@@ -2,12 +2,12 @@
 -------------------------- The one stop shop to Check yo' ReP --------------------------
 --[[ This file holds the core functions of RepCheck
 -- Current Function of the Addon, you ask?!
--- Upon login you will be greated by a nice "Hello World!"
+-- Upon login you will be greeted by a nice "Hello World!"
 -- If you type '/RepCheck' you will be given a hearty 'Hello World' ]]
 -- When you character increased their rep with any faction
 -- You will be shown your completed percent with that faction
--- And see a pregess bar. ex:
--- RepCheck:  Reputaion with Netherwing is 80% to Exalted
+-- And see a progress bar. ex:
+-- RepCheck:  Reputation with Netherwing is 80% to Exalted
 -- RepCheck:  ████████████████░░░░
 -----------------------------------------------------------------------------------------
 
@@ -25,7 +25,7 @@ core = LibStub("AceAddon-3.0"):NewAddon("RepCheck", "AceConsole-3.0", "AceEvent-
 -- 'Hello world from console:'
 -- vs.
 -- core also has it's own Print
--- good for addon annoucments/general info
+-- good for addon announcements/general info
 -- core.Print will print in this format:
 -- corePrint("Hello world from core")
 -- 'RepCheck: "Hello world from core"'
@@ -48,13 +48,6 @@ end
 
 function core:PLAYER_ENTERING_WORLD()
   core:UnregisterEvent("PLAYER_ENTERING_WORLD")
-  -- core.factions = core:GetAllFactions()
-  -- for f in pairs(zonesFactions) do
-  --   -- print(zonesFactions[f])
-  --   for z in pairs(zonesFactions[f]) do
-  --     print(zonesFactions[f][z])
-  --   end
-  -- end
 end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
@@ -64,8 +57,8 @@ end
 
 function core:GetAllFactions()
   local factions = {}
-  -- GetNumFactions returns the number of avliable factions
-  -- While i is less then the value GetNumFactrions() returns
+  -- GetNumFactions returns the number of avaliable factions
+  -- While i is less then the value GetNumFaction() returns
   -- We will GetFactionInfo(index) for each faction
   -- We extract that from the function
   -- Then apply it to our new faction
@@ -73,20 +66,15 @@ function core:GetAllFactions()
   for i = 1, GetNumFactions() do
     local name, -- name of the faction
       _,
-      standingId, -- stadning get the status name (Revered, Exaulted)
-      barMin, -- this value refers to the starting point of the reputaion status
-      barMax, -- this is the value to get you to the next reputaion status
+      standingId, -- get the status name (Revered, Exalted)
+      barMin, -- this value refers to the starting point of the reputation status
+      barMax, -- this is the value to get you to the next reputation status
       barValue, -- the total amount of points you hav for this faction
-      _,
-      _,
+      _, _,
       isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
-      _,
-      _,
-      _,
-      _,
-      factionId, -- id spcific to the faction
-      _,
-      _ = GetFactionInfo(i)
+      _, _, _, _,
+      factionId, -- id specific to the faction
+      _, _ = GetFactionInfo(i)
 
     if not isHeader and factionId ~= nil then
       if barValue == nil then
@@ -107,7 +95,7 @@ function core:GetAllFactions()
       -- gets the percent completed and rounds it to the nearest full number
       local percentCompleted = math.ceil((currentValue / (barMax - barMin)) * 100)
       -- checks if the percent is nan
-      -- if it is the reputaion is at Exalted so set it to max
+      -- if it is the reputation is at Exalted so set it to max
       if tostring(percentCompleted) == "nan" then
         percentCompleted = 0
         nextStatusName = MAX_REPUTAION_COMPLETED
@@ -164,6 +152,7 @@ function core:formatProgressBar(percent)
 end
 
 -- Use this print function to purposefully show data in the console
+-- This will always ensure that 'RepCheck:' will be prepended
 function core:customPrint(msg)
   core.Print(REP_CHECK, msg)
 end
