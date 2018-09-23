@@ -70,11 +70,16 @@ function core:GetAllFactions()
       barMin, -- this value refers to the starting point of the reputation status
       barMax, -- this is the value to get you to the next reputation status
       barValue, -- the total amount of points you hav for this faction
-      _, _,
+      _,
+      _,
       isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
-      _, _, _, _,
+      _,
+      _,
+      _,
+      _,
       factionId, -- id specific to the faction
-      _, _ = GetFactionInfo(i)
+      _,
+      _ = GetFactionInfo(i)
 
     if not isHeader and factionId ~= nil then
       if barValue == nil then
@@ -98,7 +103,7 @@ function core:GetAllFactions()
       -- if it is the reputation is at Exalted so set it to max
       if tostring(percentCompleted) == "nan" then
         percentCompleted = 0
-        nextStatusName = MAX_REPUTAION_COMPLETED
+        nextStatusName = MAX_REPUTATION_COMPLETED
       end
 
       local faction = {
@@ -123,13 +128,21 @@ end
 
 function core:onFactionIncrease(a, b)
   pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-  _, _, name, increase = string.find(a, pattern)
+  _,
+    _,
+    name,
+    increase = string.find(a, pattern)
 
   if name ~= nil then
     faction = core.factions[name]
     progressBar = core:formatProgressBar(faction.percentCompleted)
     repMessage =
-      string.format(REPUTATION_GAINED_MESSAGE, faction.name, faction.percentCompleted, faction.nextStatusName)
+      string.format(
+      REPUTATION_GAINED_MESSAGE,
+      faction.name,
+      faction.percentCompleted,
+      faction.nextStatusName
+    )
 
     core:customPrint(repMessage)
     core:customPrint(progressBar)
