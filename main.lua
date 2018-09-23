@@ -4,6 +4,11 @@
 -- Current Function of the Addon, you ask?!
 -- Upon login you will be greated by a nice "Hello World!"
 -- If you type '/RepCheck' you will be given a hearty 'Hello World' ]]
+-- When you character increased their rep with any faction
+-- You will be shown your completed percent with that faction
+-- And see a pregess bar. ex:
+-- RepCheck:  Reputaion with Netherwing is 80% to Exalted
+-- RepCheck:  ████████████████░░░░
 -----------------------------------------------------------------------------------------
 
 -- core is the root of the addon. Everything will come off of core.
@@ -43,13 +48,13 @@ end
 
 function core:PLAYER_ENTERING_WORLD()
   core:UnregisterEvent("PLAYER_ENTERING_WORLD")
-  core.factions = core:GetAllFactions()
-  for f in pairs(zonesFactions) do
-    -- print(zonesFactions[f])
-    for z in pairs(zonesFactions[f]) do
-      print(zonesFactions[f][z])
-    end
-  end
+  -- core.factions = core:GetAllFactions()
+  -- for f in pairs(zonesFactions) do
+  --   -- print(zonesFactions[f])
+  --   for z in pairs(zonesFactions[f]) do
+  --     print(zonesFactions[f][z])
+  --   end
+  -- end
 end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
