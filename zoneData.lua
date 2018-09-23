@@ -2,7 +2,7 @@
 -- [zone name] = {[? HORDE or ALLIANCE]Zone, [? HORDE or ALLIANCE]Zone, ... } --
 -----------------------------------------------
 zonesFactions = {
-  -- Battle for Azeroth Factions
+  -- Battle for Azeroth
   ["Drustvar"] = {"[A]Order of Embers"},
   ["House Proudmoore"] = {"[A]Proudmoore Admiarlty"},
   ["Kul Tiras"] = {"Honorbound", "[A]7th Legion", "[A]Proudmoore Admiarlty", "Tortollan Seekers"},
@@ -11,7 +11,7 @@ zonesFactions = {
   ["Stormsong Valley"] = {"[A]Storm's Wake"},
   ["Vol'dun"] = {"[H]Voldunai"},
   ["Zulzadar"] = {"[H]Zandalari Empire", "[H]Honorbound", "[A]7th Legion", "Tortollan Seekers"},
-  -- Legion Factions
+  -- Legion
   ["Aalgen Point"] = {"Valarjar"},
   ["Argus"] = {"Armies of Legionfall", "Argussian Reach", "Army of the Light"},
   ["Azsuna"] = {"Court of Farondis"},
@@ -40,7 +40,12 @@ zonesFactions = {
   ["Narand"] = {"Steamwheedle Preservation Society"},
   ["Ruins of Na'gwa"] = {"Steamwheedle Preservation Society"},
   ["Saberstalkers"] = {"Fang'rlia"},
-  ["Shadowmoon Valley"] = {"[A]Council of Exarchs", "Ashtongue Deathsworn", "Dragonmaw clan", "Netherwing"},
+  ["Shadowmoon Valley"] = {
+    "[A]Council of Exarchs",
+    "Ashtongue Deathsworn",
+    "Dragonmaw clan",
+    "Netherwing"
+  },
   ["Tanaan Jungle"] = {
     "[A]Hand of the Prophet",
     "[H]Vol'jin's Headhunters",
@@ -52,7 +57,12 @@ zonesFactions = {
   ["Talom Gaurds"] = {"Arakkoa Outcasts"},
   -- Mists of Pandaria
   ["Dread Wastes"] = {"Anglers", "Klaxxi"},
-  ["Isle of Thunder"] = {"[A]Kirin Tor Offensive", "[H]Sunreaver Onslaught", "Shado-Pan Assault", "Kirin Tor"},
+  ["Isle of Thunder"] = {
+    "[A]Kirin Tor Offensive",
+    "[H]Sunreaver Onslaught",
+    "Shado-Pan Assault",
+    "Kirin Tor"
+  },
   ["Jade Forest"] = {"[A]Pearlfin Jinyu", "[A]Forest Hozen", "Anglers"},
   ["Karasong Wilds"] = {"[A]Operation: Shieldwall", "[H]Dominance Offensive", "Anglers"},
   ["Pandaria"] = {
@@ -122,7 +132,12 @@ zonesFactions = {
   ["Warsong Offensive"] = {"[H]Warsong Offensive"},
   ["Wyrmrest Temple"] = {"Wyrmrest Accord"},
   -- The Burning Crusade
-  ["Eastern Kingdoms"] = {"Explorers' League", "Tushui Pandaren", "Bloodsail Buccaneers", "Kirin Tor"},
+  ["Eastern Kingdoms"] = {
+    "Explorers' League",
+    "Tushui Pandaren",
+    "Bloodsail Buccaneers",
+    "Kirin Tor"
+  },
   ["Ghostlands"] = {"[H]Tranquillien"},
   ["Helfire Peninsula"] = {"[A]Honor Hold", "[H]Mag'har", "[H]Thrallmar"},
   ["Kalimandor"] = {"Explorers' League"},
@@ -148,7 +163,13 @@ zonesFactions = {
   -- Vanilla WoW
   ["Alterac Mountains"] = {"Syndicate"},
   ["Alterac Valley"] = {"Stormpike Guard", "Frostwolf Clan"},
-  ["Azeroth"] = {"[H]Frostwolf Orcs", "[H]Laughing Skull Orcs", "Earhen Ring", "[H]Bilgewater Cartel", "Ravenholdt"},
+  ["Azeroth"] = {
+    "[H]Frostwolf Orcs",
+    "[H]Laughing Skull Orcs",
+    "Earhen Ring",
+    "[H]Bilgewater Cartel",
+    "Ravenholdt"
+  },
   ["Azuremyst Isle"] = {"[A]Exodar"},
   ["Arathi Basin"] = {"League of Arathor", "Defilers"},
   ["Arathi Highlands"] = {"League of Arathor", "Defilers", "Syndicate"},
