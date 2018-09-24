@@ -48,23 +48,36 @@ end
 
 function core:PLAYER_ENTERING_WORLD()
   core:UnregisterEvent("PLAYER_ENTERING_WORLD")
+  core.factions = core:GetAllFactions()
 end
 
 -- Code that will run when you type in '/RepCheck' in your chat terminal
 function core:RepCheckSlashProcessorFunc()
-  -- returns to name of the instance or zone name
+  -- returns to name of the instance or zone
   zoneName = GetRealZoneText()
   if zoneName == nil then
-    core.customPrint(ZONE_ERROR)
+    return core:customPrint(ZONE_ERROR)
   end
 
   factions = zonesFactions[zoneName]
   if factions == nil then
-    core.customPrint(FACTIONS_NOT_FOUND)
+    return core:customPrint(FACTIONS_NOT_FOUND)
   end
 
   for i in pairs(factions) do
-    core:customPrint(factions[i])
+    faction = core.factions[factions[i]]
+    if faction == nil then
+      return core:customPrint(FACTIONS_NOT_FOUND)
+    end
+
+    percent = faction.percentCompleted
+    if percent == nil then
+      return core:customPrint("percent is nil")
+    end
+
+    progressBar = core:formatProgressBar(faction.percentCompleted)
+    core:customPrint(faction.name)
+    return core:customPrint(progressBar)
   end
 end
 
@@ -115,7 +128,7 @@ function core:GetAllFactions()
       -- checks if the percent is nan
       -- if it is the reputation is at Exalted so set it to max
       if tostring(percentCompleted) == "nan" then
-        percentCompleted = 0
+        percentCompleted = 100
         nextStatusName = MAX_REPUTATION_COMPLETED
       end
 
@@ -166,7 +179,7 @@ function core:formatProgressBar(percent)
   local completedBar = "" .. LIGHT_GREEN
   local uncompletedBar = "" .. SUB_WHITE
 
-  for i = 1, 20 do
+  for i = 1, 19 do
     if i < (percent / 5) then
       completedBar = completedBar .. COMPLETED_BLOCK_CHAR
     else
