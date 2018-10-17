@@ -36,6 +36,7 @@ console = LibStub("AceConsole-3.0")
 
 core:RegisterChatCommand("RepCheck", "RepCheckSlashProcessorFunc")
 core.factions = {}
+core.quests = {}
 
 -- Code that you want to run when the addon is first loaded
 function core:OnInitialize()
@@ -48,40 +49,11 @@ end
 
 function core:PLAYER_ENTERING_WORLD()
   core:UnregisterEvent("PLAYER_ENTERING_WORLD")
-  core.factions = core:GetAllFactions()
+  core.factions = core:getAllFactions()
+  core.quests = core:getQuestsInGossipRange()
 end
 
--- Code that will run when you type in '/RepCheck' in your chat terminal
-function core:RepCheckSlashProcessorFunc()
-  -- returns to name of the instance or zone
-  zoneName = GetRealZoneText()
-  if zoneName == nil then
-    return core:customPrint(ZONE_ERROR)
-  end
-
-  factions = zonesFactions[zoneName]
-  if factions == nil then
-    return core:customPrint(FACTIONS_NOT_FOUND)
-  end
-
-  for i in pairs(factions) do
-    faction = core.factions[factions[i]]
-    if faction == nil then
-      return core:customPrint(FACTIONS_NOT_FOUND)
-    end
-
-    percent = faction.percentCompleted
-    if percent == nil then
-      return core:customPrint("percent is nil")
-    end
-
-    progressBar = core:formatProgressBar(faction.percentCompleted)
-    core:customPrint(faction.name)
-    return core:customPrint(progressBar)
-  end
-end
-
-function core:GetAllFactions()
+function core:getAllFactions()
   local factions = {}
   -- GetNumFactions returns the number of avaliable factions
   -- While i is less then the value GetNumFaction() returns
@@ -96,16 +68,11 @@ function core:GetAllFactions()
       barMin, -- this value refers to the starting point of the reputation status
       barMax, -- this is the value to get you to the next reputation status
       barValue, -- the total amount of points you hav for this faction
-      _,
-      _,
+      _, _,
       isHeader, -- a header is a category such as: Horde, Burning Crusades, etc...
-      _,
-      _,
-      _,
-      _,
+      _, _, _, _,
       factionId, -- id specific to the faction
-      _,
-      _ = GetFactionInfo(i)
+      _,  _ = GetFactionInfo(i)
 
     if not isHeader and factionId ~= nil then
       if barValue == nil then
@@ -153,11 +120,16 @@ function core:GetAllFactions()
 end
 
 function core:onFactionIncrease(a, b)
-  pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
-  _,
-    _,
-    name,
-    increase = string.find(a, pattern)
+  if FACTION_STANDING_INCREASED ~= nil then
+    pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+    _, _, name, increase = string.find(a, pattern)
+  end
+
+  if FACTION_STANDING_DECREASED ~= nil then
+    pattern = string.gsub(string.gsub(FACTION_STANDING_INCREASED, "(%%s)", "(.+)"), "(%%d)", "(.+)")
+    _, _, name, increase = string.find(a, pattern)
+  end
+
 
   if name ~= nil then
     faction = core.factions[name]
@@ -194,4 +166,50 @@ end
 -- This will always ensure that 'RepCheck:' will be prepended
 function core:customPrint(msg)
   core.Print(REP_CHECK, msg)
+end
+
+--------------------------------- This section deals with anything quest related ---------------------------------
+function core:getQuestsInGossipRange()
+  console.Print("in getQuestInGossipRange")
+
+  numberOfQuests = GetNumGossipAvailableQuests()
+  console.Print("numberOfQuests", numberOfQuests)
+  if numberOfQuests == nil then
+    core:customPrint(NO_QUESTS_FOUND)
+  end
+
+  for i = 1, numberOfQuests do
+    quest = SelectGossipAvailableQuest(i)
+    core:customPrint("quest", quest)
+  end
+end
+
+---------------------- Code that will run when you type in '/RepCheck' in your chat terminal ---------------------
+function core:RepCheckSlashProcessorFunc()
+  -- returns to name of the instance or zone
+  zoneName = GetRealZoneText()
+  if zoneName == nil then
+    return core:customPrint(ZONE_ERROR)
+  end
+
+  factions = zonesFactions[zoneName]
+  if factions == nil then
+    return core:customPrint(FACTIONS_NOT_FOUND)
+  end
+
+  for i in pairs(factions) do
+    faction = core.factions[factions[i]]
+    if faction == nil then
+      return core:customPrint(FACTIONS_NOT_FOUND)
+    end
+
+    percent = faction.percentCompleted
+    if percent == nil then
+      return core:customPrint("percent is nil")
+    end
+
+    progressBar = core:formatProgressBar(faction.percentCompleted)
+    core:customPrint(faction.name)
+    return core:customPrint(progressBar)
+  end
 end
