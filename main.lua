@@ -50,7 +50,7 @@ end
 function core:PLAYER_ENTERING_WORLD()
   core:UnregisterEvent("PLAYER_ENTERING_WORLD")
   core.factions = core:getAllFactions()
-  core.quests = core:getQuestsInGossipRange()
+  -- core.quests = core:getQuestsInGossipRange()
 end
 
 function core:getAllFactions()
