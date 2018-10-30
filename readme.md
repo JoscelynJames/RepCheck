@@ -8,10 +8,10 @@ Mac instructions:
 $ cd Applications/World of Warcraft/interface/addons
 git clone git@github.com:JoscelynJames/RepCheck.git
 ```
-Open World of Warcraft 
-Open Addons 
-You should see RepCheck as an addon
-:) 
+* Open World of Warcraft 
+* Open Addons 
+* You should see RepCheck as an addon
+* :) 
 
 ## Current Features
 
