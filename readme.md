@@ -6,7 +6,7 @@ A World of Warcraft Addon for all your reputation needs.
 Mac instructions:
 ```
 $ cd Applications/World of Warcraft/interface/addons
-git clone git@github.com:JoscelynJames/RepCheck.git
+$ git clone git@github.com:JoscelynJames/RepCheck.git
 ```
 * Open World of Warcraft 
 * Open Addons 
@@ -81,4 +81,3 @@ foo, bar = baz, boo
 foo = baz
 bar = boo
 ```
-
